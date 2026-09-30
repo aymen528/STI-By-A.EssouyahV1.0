@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STI Quiz — Plateforme de tests de compétences</title>
+    <meta
+      name="description"
+      content="Testez vos compétences en développement web avec les quiz HTML5, CSS3, JavaScript, SQL et PHP."
+    />
+    <meta name="author" content="Aymen Essouyah" />
+    <link rel="icon" href="medias/STI_by_AE.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f4f5f9;
+        --surface: #ffffff;
+        --border: #e1e4ec;
+        --ink: #14161f;
+        --muted: #5b6172;
+        --accent: #4338ca;
+        --accent-soft: #eceafd;
+        --c-htmlcss: #e4572e;
+        --c-js: #b8860b;
+        --c-sql: #0e7c86;
+        --c-php: #4c51bf;
+        --radius: 14px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "IBM Plex Sans", Arial, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        background-image: radial-gradient(circle, #dfe2ec 1px, transparent 1px);
+        background-size: 26px 26px;
+      }
+
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+
+      code,
+      .mono {
+        font-family: "IBM Plex Mono", monospace;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      /* ---------- Top bar ---------- */
+      .topbar {
+        border-bottom: 1px solid var(--border);
+        background: rgba(244, 245, 249, 0.85);
+        backdrop-filter: blur(6px);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .topbar-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid var(--border);
+        background: var(--surface);
+      }
+
+      .wordmark {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 1.15em;
+      }
+
+      .wordmark span {
+        color: var(--accent);
+      }
+
+      .topbar-meta {
+        color: var(--muted);
+        font-size: 0.85em;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        padding: 72px 0 56px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 56px;
+        align-items: center;
+      }
+
+      .hero h1 {
+        font-size: 2.6em;
+        line-height: 1.15;
+        margin-bottom: 20px;
+      }
+
+      .hero p {
+        color: var(--muted);
+        font-size: 1.08em;
+        line-height: 1.65;
+        max-width: 46ch;
+        margin-bottom: 28px;
+      }
+
+      .hero-cta {
+        display: inline-flex;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 13px 26px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95em;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(67, 56, 202, 0.25);
+      }
+
+      .btn-ghost {
+        color: var(--ink);
+        border: 1px solid var(--border);
+        background: var(--surface);
+      }
+
+      .btn-ghost:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* Terminal card */
+      .terminal {
+        background: #14161f;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: 0 20px 45px rgba(20, 22, 31, 0.25);
+        animation: rise 0.6s ease;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .terminal-bar {
+        display: flex;
+        gap: 7px;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .terminal-bar span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #3a3d4d;
+      }
+
+      .terminal-body {
+        padding: 20px 22px 26px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.86em;
+        line-height: 1.9;
+        color: #c9cce0;
+      }
+
+      .terminal-body .prompt {
+        color: #6ee7d7;
+      }
+
+      .terminal-line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 26px;
+      }
+
+      .rotator-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        font-size: 1.25em;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      .rotator-icon img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .rotator-text {
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      .rotator-fade {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      .cursor {
+        color: #6ee7d7;
+        animation: blink 1s step-end infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .rotator-icon,
+        .rotator-text {
+          transition: none;
+        }
+        .cursor {
+          animation: none;
+        }
+      }
+
+      /* ---------- Section headings ---------- */
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 26px;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .section-head h2 {
+        font-size: 1.6em;
+      }
+
+      .section-head p {
+        color: var(--muted);
+        font-size: 0.95em;
+      }
+
+      /* ---------- Quiz cards ---------- */
+      .modules {
+        padding: 20px 0 10px;
+      }
+
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--card-accent, var(--accent));
+        border-radius: var(--radius);
+        padding: 26px 24px;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease,
+          border-color 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 30px rgba(20, 22, 31, 0.1);
+      }
+
+      .card-htmlcss {
+        --card-accent: var(--c-htmlcss);
+      }
+      .card-js {
+        --card-accent: var(--c-js);
+      }
+      .card-sql {
+        --card-accent: var(--c-sql);
+      }
+      .card-php {
+        --card-accent: var(--c-php);
+      }
+
+      .card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+
+      .card-icon {
+        font-size: 1.8em;
+      }
+
+      .card-badge {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75em;
+        color: var(--card-accent, var(--accent));
+        background: color-mix(in srgb, var(--card-accent) 12%, white);
+        padding: 4px 10px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+
+      .card h3 {
+        font-size: 1.25em;
+      }
+
+      .card .tagline {
+        font-size: 0.8em;
+        color: var(--card-accent, var(--accent));
+        font-weight: 600;
+        text-transform: none;
+      }
+
+      .card p.desc {
+        color: var(--muted);
+        font-size: 0.92em;
+        line-height: 1.55;
+        flex-grow: 1;
+      }
+
+      .card .btn {
+        align-self: flex-start;
+        background: var(--accent-soft);
+        color: var(--accent);
+        padding: 10px 20px;
+        font-size: 0.88em;
+      }
+
+      .card:hover .btn {
+        background: var(--accent);
+        color: white;
+      }
+
+      /* ---------- Stats strip ---------- */
+      .stats-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        margin: 56px 0;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--surface);
+      }
+
+      .stat {
+        flex: 1 1 200px;
+        padding: 24px;
+        text-align: center;
+        border-right: 1px solid var(--border);
+      }
+
+      .stat:last-child {
+        border-right: none;
+      }
+
+      .stat-number {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 2em;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .stat-label {
+        color: var(--muted);
+        font-size: 0.85em;
+        margin-top: 4px;
+      }
+
+      /* ---------- Annexes ---------- */
+      .annexes {
+        padding: 20px 0 10px;
+      }
+
+      .annexes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 16px;
+      }
+
+      .annexe-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        text-decoration: none;
+        color: var(--ink);
+        transition: border-color 0.2s ease, transform 0.2s ease;
+      }
+
+      .annexe-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-3px);
+      }
+
+      .annexe-icon {
+        font-size: 1.6em;
+        margin-bottom: 10px;
+      }
+
+      .annexe-card h4 {
+        font-size: 1.02em;
+        margin-bottom: 4px;
+      }
+
+      .annexe-card p {
+        font-size: 0.82em;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      /* ---------- Tips ---------- */
+      .tips {
+        margin: 56px 0;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 32px;
+      }
+
+      .tips-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        margin-top: 22px;
+      }
+
+      .tip {
+        border-left: 3px solid var(--accent);
+        padding-left: 16px;
+      }
+
+      .tip h4 {
+        font-size: 1em;
+        margin-bottom: 4px;
+      }
+
+      .tip p {
+        color: var(--muted);
+        font-size: 0.88em;
+        line-height: 1.5;
+      }
+
+      /* ---------- Footer ---------- */
+      .footer {
+        border-top: 1px solid var(--border);
+        padding: 34px 0 44px;
+        color: var(--muted);
+        font-size: 0.86em;
+        text-align: center;
+      }
+
+      .footer .stack {
+        margin-top: 8px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.85em;
+      }
+
+      /* ---------- Responsive ---------- */
+      @media (max-width: 860px) {
+        .hero {
+          grid-template-columns: 1fr;
+          padding-top: 44px;
+        }
+        .hero h1 {
+          font-size: 2em;
+        }
+        .stats-strip {
+          flex-direction: column;
+        }
+        .stat {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .stat:last-child {
+          border-bottom: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <div class="brand">
+          <img
+            class="topbar-logo"
+            src="medias/STI_by_AE.ico"
+            alt="Logo A.E STI"
+            onerror="this.style.display='none'"
+          />
+          <div class="wordmark">
+            Systèmes et Technologies de l'Informatique <span></span>
+          </div>
+        </div>
+        <div class="topbar-meta">
+          Lycée Raféha · Aymen Essouyah
+          <img
+            class="topbar-logo"
+            src="lycee_logo.png"
+            alt="Logo Lycée Raféha"
+            onerror="this.style.display='none'"
+          />
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <section class="hero">
+        <div>
+          <h1>
+            Cours, Annexes, Exercices, Séries, Projets sur le développement web,
+            un quiz à la fois.
+          </h1>
+          <p>
+            HTML5, CSS3, JavaScript, SQL et PHP : testez vos compétences avec
+            des questions et des exercices ciblés , un retour immédiat et des
+            annexes de révision toujours à portée de clic.
+          </p>
+          <div class="hero-cta">
+            <a href="#cours" class="btn btn-ghost"
+              >Voir les cours ou exercices</a
+            >
+            <a href="#modules" class="btn btn-primary">Choisir un quiz</a>
+          </div>
+        </div>
+
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <span class="prompt">$</span>
+              <span class="rotator-icon" id="rotatorIcon">🏫</span>
+              <span class="rotator-text" id="rotatorText"
+                >Cours &amp; Annexes pour</span
+              >
+              <span class="cursor">▌</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="annexes" id="cours">
+        <div class="section-head">
+          <h2>Cours</h2>
+          <p>Vos supports de cours, en un clic</p>
+        </div>
+        <div class="annexes-grid">
+          <a href="HTML5 By A.E.html" class="annexe-card">
+            <div class="annexe-icon">🌐</div>
+            <h4>HTML5</h4>
+            <p>Balises, formulaires, tableaux, vidéo</p>
+          </a>
+          <a href="CSS3 By A.E.html" class="annexe-card">
+            <div class="annexe-icon">🎨</div>
+            <h4>CSS3</h4>
+            <p>Sélecteurs, propriétés, animations</p>
+          </a>
+          <a href="JS By A.E.html" class="annexe-card">
+            <div class="annexe-icon">📜</div>
+            <h4>JavaScript</h4>
+            <p>Variables, fonctions, DOM, objets</p>
+          </a>
+          <a href="SQL By A.E.html" class="annexe-card">
+            <div class="annexe-icon">🗄️</div>
+            <h4>SQL</h4>
+            <p>Requêtes, jointures, agrégations, connexion</p>
+          </a>
+          <a href="PHP By A.E.html" class="annexe-card">
+            <div class="annexe-icon">🐘</div>
+            <h4>PHP</h4>
+            <p>Fonctions, tableaux, MySQLi, dates</p>
+          </a>
+          <a href="series-exercices.html" class="annexe-card">
+            <div class="annexe-icon">📝</div>
+            <h4>Séries et exercices</h4>
+            <p>Exercices d'application et corrigés</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="modules" id="modules">
+        <div class="section-head">
+          <h2>Choisissez votre quiz</h2>
+          <p>420 questions réparties sur 4 modules</p>
+        </div>
+        <div class="cards-grid">
+          <div
+            class="card card-htmlcss"
+            onclick="window.location.href='quiz-html-css.html'"
+          >
+            <div class="card-top">
+              <div class="card-icon">🎨</div>
+              <div class="card-badge">120 questions</div>
+            </div>
+            <div>
+              <div class="tagline">Structure &amp; style</div>
+              <h3>HTML5 &amp; CSS3</h3>
+            </div>
+            <p class="desc">
+              Balises, formulaires, tableaux, vidéo, sélecteurs, boîtes et
+              animations.
+            </p>
+            <button class="btn">Commencer le quiz</button>
+          </div>
+
+          <div
+            class="card card-js"
+            onclick="window.location.href='quiz-javascript.html'"
+          >
+            <div class="card-top">
+              <div class="card-icon">⚡</div>
+              <div class="card-badge">100 questions</div>
+            </div>
+            <div>
+              <div class="tagline">ES6+ &amp; moderne</div>
+              <h3>JavaScript</h3>
+            </div>
+            <p class="desc">
+              Variables, opérateurs, fonctions, tableaux, dates, DOM et
+              exercices interactifs.
+            </p>
+            <button class="btn">Commencer le quiz</button>
+          </div>
+
+          <div
+            class="card card-sql"
+            onclick="window.location.href='quiz-sql.html'"
+          >
+            <div class="card-top">
+              <div class="card-icon">🗄️</div>
+              <div class="card-badge">80 questions</div>
+            </div>
+            <div>
+              <div class="tagline">Structured Query Language</div>
+              <h3>SQL</h3>
+            </div>
+            <p class="desc">
+              Requêtes SELECT, jointures, sous-requêtes et fonctions
+              d'agrégation.
+            </p>
+            <button class="btn">Commencer le quiz</button>
+          </div>
+
+          <div
+            class="card card-php"
+            onclick="window.location.href='quiz-php.html'"
+          >
+            <div class="card-top">
+              <div class="card-icon">🐘</div>
+              <div class="card-badge">120 questions</div>
+            </div>
+            <div>
+              <div class="tagline">Hypertext Preprocessor</div>
+              <h3>PHP</h3>
+            </div>
+            <p class="desc">
+              Variables, chaînes, tableaux indexés/associatifs, MySQLi et dates.
+            </p>
+            <button class="btn">Commencer le quiz</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="stats-strip">
+        <div class="stat">
+          <div class="stat-number">420</div>
+          <div class="stat-label">Questions totales</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Quiz disponibles</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Tentatives, sans limite</div>
+        </div>
+      </div>
+
+      <section class="tips">
+        <h2>Conseils pour réussir</h2>
+        <div class="tips-grid">
+          <div class="tip">
+            <h4>Révisez d'abord</h4>
+            <p>Relisez vos cours ou les annexes avant de commencer.</p>
+          </div>
+          <div class="tip">
+            <h4>Prenez votre temps</h4>
+            <p>Aucune limite de temps : lisez bien chaque question.</p>
+          </div>
+          <div class="tip">
+            <h4>Pratiquez régulièrement</h4>
+            <p>La répétition est la clé de la maîtrise.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <div class="wrap">
+        <p>
+          © 2026 Lycée Raféha — Plateforme STI pour les 3<sup>ème </sup> et
+          4<sup>ème </sup> SI
+        </p>
+        <p class="stack">HTML5/CSS3 · JavaScript · SQL · PHP</p>
+        <p style="margin-top: 10px">
+          Élaboré par Aymen Essouyah, en collaboration avec l'intelligence
+          artificielle
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Rotation du terminal : logo + libellé affichés successivement
+      var rotatorItems = [
+        { icon: "logo", text: "Cours, Exercices & Annexes pour" },
+        { icon: "🌐", text: "HTML5" },
+        { icon: "🎨", text: "CSS3" },
+        { icon: "📜", text: "JavaScript" },
+        { icon: "🗄️", text: "SQL" },
+        { icon: "🐘", text: "PHP" },
+        { icon: "🎯", text: "des quiz" },
+        { icon: "📝", text: "des séries et exercices" },
+      ];
+
+      var rotatorIndex = 0;
+      var rotatorIconEl = document.getElementById("rotatorIcon");
+      var rotatorTextEl = document.getElementById("rotatorText");
+      var reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      function setRotatorContent(item) {
+        if (item.icon === "logo") {
+          rotatorIconEl.innerHTML =
+            '<img src="lycee_logo.png" alt="Logo Lycée Raféha" onerror="this.replaceWith(\'medias/STI_by_AE.ico\')" />';
+        } else {
+          rotatorIconEl.textContent = item.icon;
+        }
+        rotatorTextEl.textContent = item.text;
+      }
+
+      function rotate() {
+        rotatorIndex = (rotatorIndex + 1) % rotatorItems.length;
+        var next = rotatorItems[rotatorIndex];
+
+        if (reduceMotion) {
+          setRotatorContent(next);
+          return;
+        }
+
+        rotatorIconEl.classList.add("rotator-fade");
+        rotatorTextEl.classList.add("rotator-fade");
+
+        setTimeout(function () {
+          setRotatorContent(next);
+          rotatorIconEl.classList.remove("rotator-fade");
+          rotatorTextEl.classList.remove("rotator-fade");
+        }, 250);
+      }
+
+      setRotatorContent(rotatorItems[0]);
+      setInterval(rotate, 2200);
+    </script>
+  </body>
+</html>
