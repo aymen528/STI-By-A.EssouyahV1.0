@@ -107,102 +107,6 @@
         margin: 12px 4px 0;
         line-height: 1.5;
       }
-      /* HEADER */
-      header {
-        background: linear-gradient(135deg, #0f1c47 0%, #16265c 100%);
-        color: #fff;
-        padding: 34px 0 30px;
-        margin-bottom: 26px;
-      }
-      .header-inner {
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 22px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        flex-wrap: wrap;
-      }
-      .header-left {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        flex-wrap: wrap;
-      }
-      .header-actions {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .btn-nav {
-        background: rgba(255, 255, 255, 0.15);
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-family: "Poppins", sans-serif;
-        font-size: 13px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-      }
-      .btn-nav:hover {
-        background: rgba(255, 255, 255, 0.25);
-        transform: translateY(-2px);
-      }
-      .css-badge {
-        flex: 0 0 auto;
-        width: 62px;
-        height: 62px;
-        border-radius: 14px;
-        background: linear-gradient(135deg, #2965d6, #1c3fa8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Poppins";
-        font-weight: 800;
-        font-size: 22px;
-        color: #fff;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-        transform: rotate(-4deg);
-      }
-      .title-block {
-        flex: 1 1 380px;
-        min-width: 260px;
-      }
-      .title-row {
-        display: flex;
-        align-items: baseline;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-      .title-row h1 {
-        margin: 0;
-        font-size: clamp(22px, 3.5vw, 32px);
-        line-height: 1.05;
-        font-weight: 800;
-      }
-      .subtitle {
-        margin: 8px 0 0;
-        color: #c6d0f0;
-        font-size: 13.5px;
-        font-weight: 500;
-      }
-      .header-note {
-        flex: 0 0 auto;
-        text-align: right;
-        font-size: 12px;
-        color: #a9b6e6;
-        line-height: 1.4;
-        max-width: 200px;
-        font-style: italic;
-      }
-
       /* SECTIONS & TITRES */
       .section-label {
         display: flex;
@@ -679,34 +583,98 @@
       .lnk-demo:active{color:#fff;background:#d6336c;border-color:#d6336c;transform:translateY(0) scale(.97)}
       .lnk-demo:focus-visible{outline:3px solid #5b8cff;outline-offset:2px}
       @media (prefers-reduced-motion:reduce){.dm-tr{transition:none}.dm-an{animation:none}}
+      /* ===== Démo : fonctions de temporisation (ease…) ===== */
+      .ez{background:#f4f3fa;border:1px solid #dfe3f3;border-radius:12px;padding:12px 14px;margin:8px 0}
+      .ez-row{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:6px 12px;padding:8px 0}
+      .ez-row+.ez-row{border-top:1px dashed #cfd5ec}
+      .ez-name{font:600 12px "Fira Code",ui-monospace,monospace;color:#1c2440;display:flex;flex-direction:column;gap:4px}
+      .ez-name svg{width:40px;height:40px;background:#fff;border:1px solid #dfe3f3;border-radius:6px}
+      .ez-name path{fill:none;stroke:#6c4fe0;stroke-width:2.5;stroke-linecap:round}
+      .ez-rail{position:relative;height:30px;margin-right:2px;background:linear-gradient(90deg,#dfe3f3 0 1px,transparent 1px) 25%/25% 100%,#eef1fb;border-radius:15px}
+      .ez-rail::after{content:"";position:absolute;left:15px;right:15px;top:50%;border-top:2px dashed #c9d2ef}
+      .ez-ball{position:absolute;top:0;left:0;width:30px;height:30px;border-radius:50%;background:#ff6a3d;box-shadow:0 2px 6px rgba(255,106,61,.5);z-index:1;animation:ez-run 4s infinite}
+      .ez-linear{animation-timing-function:linear;background:#5b6584;box-shadow:0 2px 6px rgba(91,101,132,.5)}
+      .ez-ease{animation-timing-function:ease}
+      .ez-in{animation-timing-function:ease-in;background:#29abe2;box-shadow:0 2px 6px rgba(41,171,226,.5)}
+      .ez-out{animation-timing-function:ease-out;background:#0e9e86;box-shadow:0 2px 6px rgba(14,158,134,.5)}
+      .ez-inout{animation-timing-function:ease-in-out;background:#6c4fe0;box-shadow:0 2px 6px rgba(108,79,224,.5)}
+      @keyframes ez-run{0%{left:0}42%{left:calc(100% - 30px)}50%{left:calc(100% - 30px)}92%{left:0}100%{left:0}}
+      .ez-note{font-size:12px;color:#5b6584;margin:2px 0 0}
+      @media (prefers-reduced-motion:reduce){.ez-ball{animation:none}}
+      /* ===== Barre supérieure fixe (moderne) + sommaire 1 à 8 toujours visible ===== */
+      :root{--bar-h:90px}
+      html{scroll-behavior:smooth}
+      .section-label[id]{scroll-margin-top:calc(var(--bar-h) + 14px)}
+      header.topbar{position:sticky;top:0;z-index:200;color:#fff;background:rgba(15,28,71,.88);-webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5);border-bottom:1px solid rgba(255,255,255,.1);transition:box-shadow .3s ease,background .3s ease}
+      header.topbar.scrolled{background:rgba(15,28,71,.95);box-shadow:0 8px 28px rgba(8,14,40,.35)}
+      .topbar-inner{max-width:1240px;margin:0 auto;padding:8px 22px 9px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:7px 16px}
+      .brand{display:flex;align-items:center;gap:11px;min-width:0;color:#fff;text-decoration:none}
+      .css-badge{flex:0 0 auto;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#2965d6,#6c4fe0);font:800 12px "Poppins",system-ui,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+      .brand h1{margin:0;font-size:clamp(14px,1.5vw,17px);font-weight:700;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .brand{grid-column:1;grid-row:1}
+      .header-actions{grid-column:2;grid-row:1}
+      .toc-nav{grid-column:1/-1;grid-row:2;background:rgba(255,255,255,.07);border-radius:18px;padding:3px}
+      .toc{display:flex;flex-wrap:wrap;gap:2px;margin:0;padding:0;list-style:none}
+      .toc li{flex:1 1 auto}
+      .toc a{display:flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;color:#c6d0f0;text-decoration:none;border-radius:999px;padding:4px 10px 4px 4px;font:600 12.5px "Poppins",system-ui,sans-serif;transition:background .25s ease,color .25s ease}
+      .toc a b{display:grid;place-items:center;flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:11px;transition:background .25s ease}
+      .toc a:hover{background:rgba(255,255,255,.12);color:#fff}
+      .toc a[aria-current]{background:#fff;color:#0f1c47}
+      .toc a[aria-current] b{background:linear-gradient(135deg,#2965d6,#6c4fe0)}
+      .toc .l-short{display:none}
+      .toc a:focus-visible,.btn-nav:focus-visible,.brand:focus-visible{outline:3px solid #5b8cff;outline-offset:2px}
+      .header-actions{display:flex;gap:8px}
+      .btn-nav{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;text-decoration:none;font-size:15px;transition:background .25s ease,transform .25s ease}
+      .btn-nav:hover{background:rgba(255,255,255,.22);transform:translateY(-2px)}
+      .progress{position:absolute;left:0;right:0;bottom:-1px;height:3px;pointer-events:none}
+      .progress i{display:block;height:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,#29abe2,#6c4fe0,#ff6a3d)}
+      /* Téléphone : les 8 numéros restent tous visibles, le point actif affiche son nom */
+      @media (max-width:640px){
+        .topbar-inner{padding:8px 14px 9px}
+        .toc-nav{background:none;padding:0;overflow-x:auto;scrollbar-width:none}
+        .toc-nav::-webkit-scrollbar{display:none}
+        .toc{flex-wrap:nowrap;justify-content:space-between;gap:3px}
+        .toc li{flex:0 0 auto}
+        .toc a{padding:3px;gap:6px}
+        .toc a b{width:26px;height:26px;font-size:12px}
+        .toc .lbl{display:none}
+        .toc a[aria-current]{padding-right:11px}
+        .toc a[aria-current] .lbl{display:inline}
+        .toc .l-long{display:none}
+        .toc .l-short{display:inline}
+      }
+      @media (max-width:360px){.toc a[aria-current] .lbl{display:none}.toc a[aria-current]{padding-right:3px}}
+      @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}header.topbar,.toc a,.toc a b,.btn-nav,#to-top{transition:none}}
+      @media print{header.topbar{position:static}#to-top{display:none}}
+      .intro{max-width:1240px;margin:22px auto 0;padding:0 22px;display:flex;flex-wrap:wrap;gap:4px 18px;align-items:baseline;justify-content:space-between}
+      .intro p{margin:0;color:#5b6584;font-size:13.5px;font-weight:500}
+      .intro .credit{font-size:12.5px;font-style:italic}
+      #to-top{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:150;display:grid;place-items:center;width:46px;height:46px;padding:0;border:0;border-radius:50%;background:linear-gradient(135deg,#2965d6,#6c4fe0);color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(15,28,71,.4);opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .25s ease,transform .25s ease,visibility .25s}
+      #to-top.show{opacity:1;visibility:visible;transform:none}
+      #to-top.show:hover{transform:translateY(-3px)}
+      #to-top:focus-visible{outline:3px solid #5b8cff;outline-offset:3px}
+      #to-top svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
     </style>
   </head>
   <body>
-    <header>
-      <div class="header-inner">
-        <div class="header-left">
-          <div class="css-badge">CSS3</div>
-          <div class="title-block">
-            <div class="title-row">
-              <h1>Fiche Synthèse Globale CSS3</h1>
-            </div>
-            <p class="subtitle">
-              Sélecteurs &amp; Priorités · Typographie · Arrière-plan · Boîtes ·
-              Position &amp; Flex ·Transition · Animations
-            </p>
-          </div>
-        </div>
+    <header class="topbar" id="top">
+      <div class="topbar-inner">
+        <a class="brand" href="#top" aria-label="Fiche Synthèse Globale CSS3 — haut de page">
+          <span class="css-badge" aria-hidden="true">CSS3</span>
+          <h1>Fiche Synthèse Globale CSS3</h1>
+        </a>
+        <nav class="toc-nav" aria-label="Sommaire des points 1 à 8"><ul class="toc"><li><a href="#point-1" title="Sélecteurs" aria-label="Point 1 : Sélecteurs"><b>1</b><span class="lbl"><span class="l-long">Sélecteurs</span><span class="l-short">Sélecteurs</span></span></a></li><li><a href="#point-2" title="Texte" aria-label="Point 2 : Texte"><b>2</b><span class="lbl"><span class="l-long">Texte</span><span class="l-short">Texte</span></span></a></li><li><a href="#point-3" title="Arrière-plan" aria-label="Point 3 : Arrière-plan"><b>3</b><span class="lbl"><span class="l-long">Arrière-plan</span><span class="l-short">Fond</span></span></a></li><li><a href="#point-4" title="Boîtes &amp; Display" aria-label="Point 4 : Boîtes &amp; Display"><b>4</b><span class="lbl"><span class="l-long">Boîtes &amp; Display</span><span class="l-short">Boîtes</span></span></a></li><li><a href="#point-5" title="Position &amp; Flex" aria-label="Point 5 : Position &amp; Flex"><b>5</b><span class="lbl"><span class="l-long">Position &amp; Flex</span><span class="l-short">Position</span></span></a></li><li><a href="#point-6" title="Bordures" aria-label="Point 6 : Bordures"><b>6</b><span class="lbl"><span class="l-long">Bordures</span><span class="l-short">Bordures</span></span></a></li><li><a href="#point-7" title="Listes &amp; Tableaux" aria-label="Point 7 : Listes &amp; Tableaux"><b>7</b><span class="lbl"><span class="l-long">Listes &amp; Tableaux</span><span class="l-short">Listes</span></span></a></li><li><a href="#point-8" title="Transform &amp; Animations" aria-label="Point 8 : Transform &amp; Animations"><b>8</b><span class="lbl"><span class="l-long">Transform &amp; Animations</span><span class="l-short">Animations</span></span></a></li></ul></nav>
         <div class="header-actions">
-          <a href="index.html" class="btn-nav">🏠 Retour</a>
-          <a href="pdf/Annexe CSS3 By A.E.pdf" target="_blank" class="btn-nav"
-            >📄 Annexe CSS3 PDF</a
-          >
-        </div>
-        <div class="header-note">
-          Travail élaboré par<br /><b>A. Essouyah</b>
+          <a href="index.html" class="btn-nav" title="Retour" aria-label="Retour">🏠</a>
+          <a href="pdf/Annexe CSS3 By A.E.pdf" target="_blank" class="btn-nav" title="Annexe CSS3 PDF" aria-label="Annexe CSS3 PDF">📄</a>
         </div>
       </div>
+      <div class="progress" aria-hidden="true"><i></i></div>
     </header>
+    <div class="intro">
+      <p>Sélecteurs &amp; Priorités · Typographie · Arrière-plan · Boîtes · Position &amp; Flex · Transition · Animations</p>
+      <p class="credit">Travail élaboré par <b>A. Essouyah</b></p>
+    </div>
 
     <div class="wrap">
       <!-- ==================== CONCEPT & PRIORITÉS CSS ==================== -->
@@ -813,7 +781,7 @@
       </div>
 
       <!-- ==================== 1. TYPES DES SÉLECTEURS & PSEUDO-CLASSES (ORIGINAL + AJOUTS) ==================== -->
-      <div class="section-label">
+      <div class="section-label" id="point-1">
         <div class="dot"></div>
         <span>1. Types des Sélecteurs &amp; Pseudo-Classes</span>
       </div>
@@ -974,7 +942,7 @@
       </div>
 
       <!-- ==================== 2. TEXTE & POLICES ==================== -->
-      <div class="section-label">
+      <div class="section-label" id="point-2">
         <div class="dot"></div>
         <span>2. Mise en Forme du Texte</span>
       </div>
@@ -1016,7 +984,7 @@
       </div>
 
       <!-- ==================== 3. ARRIÈRE-PLAN ==================== -->
-      <div class="section-label">
+      <div class="section-label" id="point-3">
         <div class="dot"></div>
         <span>3. Propriétés d'Arrière-Plan</span>
       </div>
@@ -1050,7 +1018,7 @@
       </div>
 
       <!-- ==================== 4. BOÎTES & DISPLAY ==================== -->
-      <div class="section-label">
+      <div class="section-label" id="point-4">
         <div class="dot"></div>
         <span>4. Modèle de Boîte &amp; Display</span>
       </div>
@@ -1104,7 +1072,7 @@
       </div>
 
       <!-- ==================== 5. POSITIONNEMENT & FLEXBOX (ORIGINAL INTÉGRAL) ==================== -->
-      <div class="section-label">
+      <div class="section-label" id="point-5">
         <div class="dot"></div>
         <span>5. Positionnement &amp; Flexbox</span>
       </div>
@@ -1955,7 +1923,7 @@
       </div>
 
       <!-- ==================== 6. BORDURES & BORDER-RADIUS (AVEC CAS DE 3 VALEURS) ==================== -->
-      <div class="section-label">
+      <div class="section-label" id="point-6">
         <div class="dot"></div>
         <span
           >6. Bordures, Ombrages &amp; Border-Radius (Cas de 3 valeurs)</span
@@ -2033,7 +2001,7 @@
       </div>
 
       <!-- ==================== 7. LISTES & TABLEAUX ==================== -->
-      <div class="section-label">
+      <div class="section-label" id="point-7">
         <div class="dot"></div>
         <span>7. Listes &amp; Tableaux Avancés</span>
       </div>
@@ -2258,7 +2226,7 @@
       </div>
 
       <!-- ==================== 8. FILTRES & TRANSFORMATIONS DÉTAILLÉES ==================== -->
-      <div class="section-label">
+      <div class="section-label" id="point-8">
         <div class="dot"></div>
         <span>8. Filtres, Transformations 2D détaillées &amp; Animations</span>
       </div>
@@ -2348,7 +2316,7 @@ border-radius: 50% / 30%;   /* coins elliptiques : horizontal / vertical */</div
 <template id="win-table-layout" data-title="table-layout — algorithme de largeur"><p>Choisit comment le navigateur calcule les largeurs de colonnes.</p><div class="codebox">table-layout: auto | fixed;</div><div class="row"><div><b>auto</b> (défaut)<table style="table-layout:auto;width:220px"><tr><td>Un contenu très très long</td><td>B</td></tr></table></div><div><b>fixed</b><table style="table-layout:fixed;width:220px"><tr><td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Un contenu très très long</td><td>B</td></tr></table></div></div><ul class="keypoints"><li><span class="ico">🔹</span> <b>auto</b> : les colonnes s'adaptent au contenu ; le navigateur lit tout le tableau avant de l'afficher.</li><li><span class="ico">🔹</span> <b>fixed</b> : les largeurs viennent de la <code>width</code> du tableau et de la 1re ligne ; affichage plus rapide et colonnes prévisibles.</li><li><span class="ico">🔹</span> Avec <code>fixed</code>, définissez <code>width</code> sur le tableau, sinon il reste en <code>auto</code>.</li><li><span class="ico">🔹</span> Le contenu trop long déborde : ajoutez <code>overflow: hidden; text-overflow: ellipsis;</code>.</li></ul></template>
 <template id="win-collapse" data-title="border-collapse — fusion des bordures"><p>Décide si les bordures des cellules restent séparées ou fusionnent.</p><div class="codebox">border-collapse: separate | collapse;</div><div class="row"><div><b>separate</b> (défaut)<table style="border-collapse:separate;border-spacing:4px;background:#d9cdf7;border-radius:8px;padding:4px"><tr><td style="background:#fff;border-color:#d9cdf7">A</td><td style="background:#fff;border-color:#d9cdf7">B</td></tr><tr><td style="background:#fff;border-color:#d9cdf7">C</td><td style="background:#fff;border-color:#d9cdf7">D</td></tr></table></div><div><b>collapse</b><table style="border-collapse:collapse"><tr><td style="background:#efeafc;border-color:#fff">A</td><td style="background:#efeafc;border-color:#fff">B</td></tr><tr><td style="background:#e9e2fb;border-color:#fff">C</td><td style="background:#e9e2fb;border-color:#fff">D</td></tr></table></div></div><ul class="keypoints"><li><span class="ico">🔹</span> <b>separate</b> : chaque cellule garde sa bordure ; double trait entre cellules, écart réglé par <code>border-spacing</code>.</li><li><span class="ico">🔹</span> <b>collapse</b> : les bordures voisines fusionnent en un seul trait ; <code>border-spacing</code> est ignoré.</li><li><span class="ico">🔹</span> <code>border-radius</code> n'arrondit pas les cellules en mode <code>collapse</code>.</li><li><span class="ico">🔹</span> Le plus courant pour un tableau propre : <code>border-collapse: collapse;</code>.</li></ul></template>
 <template id="win-transition" data-title="transition — passage progressif"><p>Rend progressif le changement d'une propriété (survol, focus, classe ajoutée en JavaScript).</p><div class="codebox">transition: propriété durée fonction délai;</div><div class="row"><div class="dm dm-tr" tabindex="0">Survolez-moi</div></div><div class="codebox">.boite { transition: background-color .4s ease, transform .4s ease; }
-.boite:hover { background: #ff6a3d; transform: scale(1.15); }</div><ul class="keypoints"><li><span class="ico">🔹</span> <code>transition-property</code> : propriété concernée (<code>all</code> = toutes).</li><li><span class="ico">🔹</span> <code>transition-duration</code> : durée (<code>.4s</code> ou <code>400ms</code>).</li><li><span class="ico">🔹</span> <code>transition-timing-function</code> : <code>ease</code>, <code>linear</code>, <code>ease-in</code>, <code>ease-out</code>, <code>ease-in-out</code>.</li><li><span class="ico">🔹</span> <code>transition-delay</code> : attente avant le début.</li></ul><h3>À retenir</h3><ul class="keypoints"><li><span class="ico">🔹</span> Placez la <code>transition</code> sur l'état de base : elle joue alors aussi au retour.</li><li><span class="ico">🔹</span> Seules les valeurs numériques s'animent ; <code>display</code> ne s'anime pas.</li><li><span class="ico">🔹</span> Préférez <code>transform</code> et <code>opacity</code>, plus fluides.</li></ul></template>
+.boite:hover { background: #ff6a3d; transform: scale(1.15); }</div><h3>Comparez les fonctions de temporisation</h3><p>Les 5 billes partent <b>en même temps</b>, avec la même durée : seule la <code>timing-function</code> change. <code>linear</code> (gris) sert de référence : vitesse constante. Observez qui démarre vite, qui ralentit à l'arrivée.</p><div class="ez"><div class="ez-row"><div class="ez-name"><span>linear</span><svg viewBox="-2 -2 44 44" aria-hidden="true"><path d="M0 40 L40 0"/></svg></div><div class="ez-rail"><div class="ez-ball ez-linear"></div></div></div><div class="ez-row"><div class="ez-name"><span>ease</span><svg viewBox="-2 -2 44 44" aria-hidden="true"><path d="M0 40 C10 36 10 0 40 0"/></svg></div><div class="ez-rail"><div class="ez-ball ez-ease"></div></div></div><div class="ez-row"><div class="ez-name"><span>ease-in</span><svg viewBox="-2 -2 44 44" aria-hidden="true"><path d="M0 40 C16.8 40 40 0 40 0"/></svg></div><div class="ez-rail"><div class="ez-ball ez-in"></div></div></div><div class="ez-row"><div class="ez-name"><span>ease-out</span><svg viewBox="-2 -2 44 44" aria-hidden="true"><path d="M0 40 C0 40 23.2 0 40 0"/></svg></div><div class="ez-rail"><div class="ez-ball ez-out"></div></div></div><div class="ez-row"><div class="ez-name"><span>ease-in-out</span><svg viewBox="-2 -2 44 44" aria-hidden="true"><path d="M0 40 C16.8 40 23.2 0 40 0"/></svg></div><div class="ez-rail"><div class="ez-ball ez-inout"></div></div></div><p class="ez-note">Les traits verticaux marquent 25 %, 50 % et 75 % du trajet. Courbe = vitesse dans le temps (pente raide = rapide).</p></div><ul class="keypoints"><li><span class="ico">🔹</span> <code>linear</code> : vitesse constante du début à la fin (effet mécanique, utile pour les rotations en boucle).</li><li><span class="ico">🔹</span> <code>ease</code> (défaut) : démarrage rapide, fin lente.</li><li><span class="ico">🔹</span> <code>ease-in</code> : démarrage lent, accélère jusqu'à la fin.</li><li><span class="ico">🔹</span> <code>ease-out</code> : démarrage rapide, ralentit à l'arrivée (naturel pour une apparition).</li><li><span class="ico">🔹</span> <code>ease-in-out</code> : lent au début et à la fin, rapide au milieu.</li></ul><ul class="keypoints"><li><span class="ico">🔹</span> <code>transition-property</code> : propriété concernée (<code>all</code> = toutes).</li><li><span class="ico">🔹</span> <code>transition-duration</code> : durée (<code>.4s</code> ou <code>400ms</code>).</li><li><span class="ico">🔹</span> <code>transition-timing-function</code> : <code>ease</code>, <code>linear</code>, <code>ease-in</code>, <code>ease-out</code>, <code>ease-in-out</code>.</li><li><span class="ico">🔹</span> <code>transition-delay</code> : attente avant le début.</li></ul><h3>À retenir</h3><ul class="keypoints"><li><span class="ico">🔹</span> Placez la <code>transition</code> sur l'état de base : elle joue alors aussi au retour.</li><li><span class="ico">🔹</span> Seules les valeurs numériques s'animent ; <code>display</code> ne s'anime pas.</li><li><span class="ico">🔹</span> Préférez <code>transform</code> et <code>opacity</code>, plus fluides.</li></ul></template>
 <template id="win-animation" data-title="animation — mouvement avec @keyframes"><p>Décrit un mouvement en plusieurs étapes, qui peut se répéter, sans action de l'utilisateur.</p><div class="codebox">@keyframes rebond {
   from { transform: translateY(0); }
   to   { transform: translateY(60px); }
@@ -2509,5 +2477,35 @@ a:active  { color: #d6336c; font-weight: bold; }           /* A : cliqué */</di
   <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a42ba6a7cb655264',t:'MTc5MDY5MTg2MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
     </script>
-  </body>
+      <button type="button" id="to-top" aria-label="Remonter en haut de la page" title="Remonter en haut"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg></button>
+    <script>
+      (function () {
+        var bar = document.querySelector("header.topbar"), nav = bar.querySelector(".toc-nav");
+        var prog = bar.querySelector(".progress i"), btn = document.getElementById("to-top");
+        var links = [].slice.call(bar.querySelectorAll(".toc a"));
+        var secs = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+        var root = document.documentElement, ticking = false, last = -2;
+        function setH() { root.style.setProperty("--bar-h", bar.offsetHeight + "px"); }
+        function update() {
+          ticking = false;
+          var y = window.pageYOffset || root.scrollTop, max = root.scrollHeight - window.innerHeight;
+          prog.style.transform = "scaleX(" + (max > 0 ? Math.min(1, y / max) : 0) + ")";
+          bar.classList.toggle("scrolled", y > 8);
+          btn.classList.toggle("show", y > 400);
+          var line = bar.offsetHeight + 40, cur = -1;
+          secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= line) cur = i; });
+          if (cur !== last) {
+            last = cur;
+            links.forEach(function (a, i) { if (i === cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+            if (cur >= 0) if (nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: links[cur].offsetLeft - nav.clientWidth / 2 + links[cur].offsetWidth / 2, behavior: "smooth" });
+          }
+        }
+        function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", function () { setH(); onScroll(); });
+        btn.addEventListener("click", function () { window.scrollTo({ top: 0 }); });
+        setH(); update();
+      })();
+    </script>
+</body>
 </html>
