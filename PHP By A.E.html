@@ -5,7 +5,7 @@
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
+    /> <link rel="icon" href="medias/STI_by_AE.ico" />
     <title>Cours PHP complet</title>
     <style>
       :root {
@@ -19,6 +19,7 @@
         --border: #d9e1ec;
         --analogy-bg: #eaf2fb;
         --header-h: 60px;
+        --side-w: 270px;
         box-sizing: border-box;
         padding-top: env(safe-area-inset-top, 0px);
         padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -48,9 +49,8 @@
         --blue: #9cc0f5;
       }
       html {
-        scroll-padding-top: calc(
-          var(--header-h) + env(safe-area-inset-top, 0px) + 10px
-        );
+        scroll-padding-top: 0;
+        scroll-behavior: smooth;
       }
       * {
         box-sizing: border-box;
@@ -63,31 +63,49 @@
         line-height: 1.55;
       }
 
+      /* ---------- Barre supérieure fixe (moderne) ---------- */
       header.top {
-        position: fixed;
+        position: sticky;
         top: 0;
-        left: 0;
-        right: 0;
-        height: var(--header-h);
-        z-index: 20;
-        background: var(--navy);
-        color: #fff;
+        z-index: 30;
+        margin-left: var(--side-w);
+        padding-top: env(safe-area-inset-top, 0px);
+        background: color-mix(in srgb, var(--bg) 84%, transparent);
+        -webkit-backdrop-filter: blur(14px) saturate(1.6);
+        backdrop-filter: blur(14px) saturate(1.6);
+        border-bottom: 1px solid var(--border);
+        transition: box-shadow 0.3s ease;
+      }
+      header.top.scrolled {
+        box-shadow: 0 8px 28px rgba(15, 23, 42, 0.14);
+      }
+      .top-inner {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 0 1rem;
-        padding-top: env(safe-area-inset-top, 0px);
-        gap: 0.6rem;
+        flex-wrap: wrap;
+        gap: 0.5rem 0.8rem;
+        padding: 0.5rem 1.2rem;
+        min-height: 58px;
       }
       .brand {
         display: flex;
         align-items: center;
-        gap: 0.6rem;
+        gap: 0.65rem;
         min-width: 0;
+        color: var(--text);
+        text-decoration: none;
       }
       .brand .logo {
-        font-size: 1.5rem;
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        font-size: 1.3rem;
         line-height: 1;
+        background: linear-gradient(135deg, #1f3864, #2e5395);
+        box-shadow: 0 4px 12px rgba(31, 56, 100, 0.35);
       }
       .brand .titles {
         min-width: 0;
@@ -95,84 +113,325 @@
       .brand .titles .t1 {
         font-weight: 700;
         font-size: 1rem;
+        line-height: 1.15;
         white-space: nowrap;
       }
       .brand .titles .t2 {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
         font-size: 0.72rem;
-        opacity: 0.85;
+        color: var(--muted);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      .now {
+        flex: 1 1 0;
+        min-width: 0;
+        padding-left: 0.9rem;
+        border-left: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.82rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .now:empty {
+        display: none;
+      }
+      .now b {
+        color: var(--blue);
+        font-weight: 700;
+      }
       .hbtns {
         display: flex;
         gap: 0.5rem;
+        margin-left: auto;
         flex-shrink: 0;
       }
-      .hbtns a,
-      .hbtns button {
-        background: rgba(255, 255, 255, 0.12);
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        border-radius: 6px;
-        padding: 0.35rem 0.7rem;
-        font-size: 0.78rem;
-        cursor: pointer;
+      .hbtns a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--card);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 0.4rem 0.85rem;
+        font-size: 0.8rem;
+        font-weight: 600;
         text-decoration: none;
         white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease,
+          border-color 0.2s ease, transform 0.2s ease;
       }
-      .hbtns a:hover,
-      .hbtns button:hover {
-        background: rgba(255, 255, 255, 0.25);
+      .hbtns a:hover {
+        background: var(--analogy-bg);
+        color: var(--blue);
+        border-color: var(--blue);
+        transform: translateY(-1px);
+      }
+      .menu-btn {
+        display: none;
+        place-items: center;
+        flex: 0 0 auto;
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--card);
+        color: var(--text);
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      .progress {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: 3px;
+        pointer-events: none;
+      }
+      .progress i {
+        display: block;
+        height: 100%;
+        transform-origin: left;
+        transform: scaleX(0);
+        background: linear-gradient(90deg, #2e5395, #6fa0ee);
       }
 
+      /* ---------- Barre latérale : titres + sous-titres toujours visibles ---------- */
       nav.side {
         position: fixed;
-        top: var(--header-h);
+        top: 0;
         left: 0;
-        width: 250px;
-        height: calc(100vh - var(--header-h));
-        overflow-y: auto;
-        border-right: 1px solid var(--border);
+        bottom: 0;
+        width: var(--side-w);
+        display: flex;
+        flex-direction: column;
+        gap: 0.05rem;
         background: var(--card);
-        padding: 1rem 0.9rem 2rem;
-        z-index: 10;
+        border-right: 1px solid var(--border);
+        padding: calc(0.9rem + env(safe-area-inset-top, 0px)) 0.75rem
+          calc(1.4rem + env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        z-index: 40;
+      }
+      nav.side .nav-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0 0 0.3rem 0.3rem;
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        font-weight: 700;
       }
       nav.side a {
         display: block;
+        position: relative;
         color: var(--text);
         text-decoration: none;
-        font-size: 0.85rem;
-        padding: 0.4rem 0.5rem;
-        border-radius: 6px;
-        margin: 0.05rem 0;
+        font-size: 0.83rem;
+        line-height: 1.3;
+        padding: 0.32rem 0.6rem;
+        border-radius: 8px;
+        transition: background 0.2s ease, color 0.2s ease;
       }
       nav.side a:hover {
         background: var(--analogy-bg);
         color: var(--blue);
       }
-      nav.side a.sub {
-        padding-left: 1.1rem;
-        font-size: 0.8rem;
+      nav.side a:focus-visible,
+      .menu-btn:focus-visible,
+      .hbtns a:focus-visible,
+      .brand:focus-visible,
+      #to-top:focus-visible {
+        outline: 3px solid #7aa2f7;
+        outline-offset: 2px;
+      }
+      .nav-group {
+        display: flex;
+        flex-direction: column;
+        margin-top: 0.4rem;
+      }
+      nav.side a.main-link {
+        font-weight: 700;
+      }
+      .nav-group.current > a.main-link {
+        color: #fff;
+        background: linear-gradient(135deg, #1f3864, #2e5395);
+        box-shadow: 0 4px 12px rgba(31, 56, 100, 0.3);
+      }
+      .sub-links-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.05rem;
+        margin: 0.2rem 0 0 0.9rem;
+        padding-left: 0.5rem;
+        border-left: 2px solid var(--border);
+      }
+      nav.side a.sub-link {
+        font-size: 0.76rem;
+        color: var(--muted);
+        padding: 0.24rem 0.55rem;
+      }
+      nav.side a.sub-link[aria-current] {
+        color: var(--blue);
+        font-weight: 600;
+        background: color-mix(in srgb, var(--blue) 14%, transparent);
+      }
+      nav.side a.sub-link[aria-current]::before {
+        content: "";
+        position: absolute;
+        left: calc(-0.5rem - 2px);
+        top: 0.2rem;
+        bottom: 0.2rem;
+        width: 2px;
+        border-radius: 2px;
+        background: var(--blue);
+      }
+      .scrim {
+        position: fixed;
+        inset: 0;
+        z-index: 35;
+        background: rgba(10, 14, 23, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
       }
 
       .wrap {
         max-width: 780px;
         margin: 0 auto;
         padding: 1.6rem 1.2rem 4rem;
-        margin-left: calc(250px + 1rem);
+        margin-left: calc(var(--side-w) + 1rem);
       }
+
+      /* ---------- Bouton « Remonter en haut » ---------- */
+      #to-top {
+        position: fixed;
+        right: max(18px, env(safe-area-inset-right, 0px));
+        bottom: max(18px, env(safe-area-inset-bottom, 0px));
+        z-index: 25;
+        display: grid;
+        place-items: center;
+        width: 46px;
+        height: 46px;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1f3864, #2e5395);
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 8px 22px rgba(31, 56, 100, 0.45);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(12px);
+        transition: opacity 0.25s ease, transform 0.25s ease,
+          visibility 0.25s;
+      }
+      #to-top.show {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+      }
+      #to-top.show:hover {
+        transform: translateY(-3px);
+      }
+      #to-top svg {
+        width: 22px;
+        height: 22px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* ---------- Tablette / téléphone : le sommaire devient un tiroir ---------- */
       @media (max-width: 860px) {
-        nav.side {
-          display: none;
+        header.top {
+          margin-left: 0;
         }
         .wrap {
           margin-left: auto;
           margin-right: auto;
         }
+        .menu-btn {
+          display: grid;
+        }
+        .brand {
+          flex: 1 1 0;
+        }
+        .now {
+          flex: 1 0 100%;
+          order: 5;
+          padding-left: 0;
+          border-left: none;
+          font-size: 0.78rem;
+        }
+        nav.side {
+          width: min(330px, 86vw);
+          transform: translateX(-102%);
+          visibility: hidden;
+          transition: transform 0.28s ease, visibility 0s linear 0.28s;
+        }
+        body.nav-open nav.side {
+          transform: none;
+          visibility: visible;
+          box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+          transition: transform 0.28s ease, visibility 0s;
+        }
+        body.nav-open .scrim {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        body.nav-open {
+          overflow: hidden;
+        }
       }
-      main {
-        padding-top: calc(var(--header-h) + 1rem);
+      @media (max-width: 640px) {
+        .hbtns .txt,
+        .brand .titles .t2 {
+          display: none;
+        }
+        .hbtns a {
+          padding: 0.4rem 0.65rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        header.top,
+        nav.side,
+        nav.side a,
+        .scrim,
+        .hbtns a,
+        #to-top {
+          transition: none !important;
+        }
+      }
+      @media print {
+        header.top {
+          position: static;
+          margin-left: 0;
+        }
+        nav.side,
+        .scrim,
+        #to-top,
+        .menu-btn {
+          display: none;
+        }
+        .wrap {
+          margin-left: auto;
+        }
       }
 
       h1.title {
@@ -896,50 +1155,106 @@
       }
     </style>
   </head>
-  <body>
+  <body id="top">
     <header class="top">
-      <div class="brand">
-        <span class="logo">🐘</span>
-        <div class="titles">
-          <div class="t1">Cours PHP complet</div>
-          <div class="t2">
-            Travail élaboré par A. Essouyah
-            <img
-              class="topbar-logo"
-              src="medias/STI_by_AE.ico"
-              alt="Logo STI By A.E"
-              width="25px"
-            />
+      <div class="top-inner">
+        <button type="button" class="menu-btn" id="menu-btn" aria-controls="sidebar" aria-expanded="false" aria-label="Ouvrir le sommaire">☰</button>
+        <a class="brand" href="#top" aria-label="Cours PHP complet — haut de page">
+          <span class="logo" aria-hidden="true">🐘</span>
+          <div class="titles">
+            <div class="t1">Cours PHP complet</div>
+            <div class="t2">
+              Travail élaboré par A. Essouyah
+              <img
+                class="topbar-logo"
+                src="medias/STI_by_AE.ico"
+                alt="Logo STI By A.E"
+                width="18"
+                height="18"
+                onerror="this.style.display='none'"
+              />
+            </div>
           </div>
+        </a>
+        <div class="now" id="now" aria-hidden="true"></div>
+        <div class="hbtns">
+          <a href="index.html" title="Retour" aria-label="Retour"><span aria-hidden="true">🏠</span><span class="txt">Retour</span></a>
+          <a href="pdf/Annexe PHP By A.E.pdf" target="_blank" rel="noopener" title="Annexe PHP (PDF)" aria-label="Annexe PHP (PDF)"><span aria-hidden="true">📄</span><span class="txt">Annexe PHP</span></a>
         </div>
       </div>
-      <div class="hbtns">
-        <a href="index.html" target="" rel="noopener">◀ Retour</a>
-        <a href="pdf/Annexe PHP By A.E.pdf" target="_blank" rel="noopener"
-          >Annexe PHP</a
-        >
-      </div>
+      <div class="progress" aria-hidden="true"><i></i></div>
     </header>
 
-    <nav class="side">
-      <a href="#s1">1. Introduction au PHP</a>
-      <a href="#s1b" class="sub">1.2 Client / serveur</a>
-      <a href="#s2">2. Types, variables, opérateurs</a>
-      <a href="#s3">3. Manipulation de variables</a>
-      <a href="#s4">4. Chaînes de caractères</a>
-      <a href="#s5">5. Les tableaux</a>
-      <a href="#s6">6. Dates et heures</a>
-      <a href="#s6" class="sub">6.1–6.6 Fonctions détaillées</a>
-      <a href="#s7">7. Superglobales &amp; divers</a>
-      <a href="#s8">8. PHP et MySQL</a>
-      <a href="#s8anim" class="sub">8.0 Animation guichet</a>
-      <a href="#s9">9. Exemple récapitulatif</a>
-      <a href="#s10">10. Quatre pages complètes</a>
-      <a href="#s10a" class="sub">10.1 Insertion</a>
-      <a href="#s10b" class="sub">10.2 Sélection</a>
-      <a href="#s10c" class="sub">10.3 Mise à jour</a>
-      <a href="#s10d" class="sub">10.4 Statistiques</a>
+    <nav class="side" id="sidebar" aria-label="Sommaire du cours">
+      <p class="nav-title"><span aria-hidden="true">🐘</span> Sommaire</p>
+      <div class="nav-group">
+        <a href="#s1" class="main-link">1. Introduction au PHP</a>
+        <div class="sub-links-container">
+          <a href="#s1-1" class="sub-link">1.1 Définition</a>
+          <a href="#s1b" class="sub-link">1.2 Client / serveur</a>
+          <a href="#s1-3" class="sub-link">1.3 Syntaxe d'un script</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#s2" class="main-link">2. Types, variables, opérateurs</a>
+        <div class="sub-links-container">
+          <a href="#s2-1" class="sub-link">2.1 Types de données</a>
+          <a href="#s2-2" class="sub-link">2.2 Les variables</a>
+          <a href="#s2-3" class="sub-link">2.3 Les constantes</a>
+          <a href="#s2-4" class="sub-link">2.4 Transtypage &amp; opérateurs</a>
+          <a href="#s2-5" class="sub-link">2.5 Maths et echo</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#s3" class="main-link">3. Manipulation de variables</a>
+      </div>
+      <div class="nav-group">
+        <a href="#s4" class="main-link">4. Chaînes de caractères</a>
+      </div>
+      <div class="nav-group">
+        <a href="#s5" class="main-link">5. Les tableaux</a>
+      </div>
+      <div class="nav-group">
+        <a href="#s6" class="main-link">6. Dates et heures</a>
+        <div class="sub-links-container">
+          <a href="#s6-1" class="sub-link">6.1 checkdate</a>
+          <a href="#s6-2" class="sub-link">6.2 date</a>
+          <a href="#s6-3" class="sub-link">6.3 getdate</a>
+          <a href="#s6-4" class="sub-link">6.4 time</a>
+          <a href="#s6-5" class="sub-link">6.5 mktime</a>
+          <a href="#s6-6" class="sub-link">6.6 strtotime</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#s7" class="main-link">7. Superglobales &amp; divers</a>
+      </div>
+      <div class="nav-group">
+        <a href="#s8" class="main-link">8. PHP et MySQL</a>
+        <div class="sub-links-container">
+          <a href="#s8anim" class="sub-link">8.0 Animation guichet</a>
+          <a href="#s8-1" class="sub-link">8.1 Circuit d'une requête</a>
+          <a href="#s8-2" class="sub-link">8.2 Fonctions MySQLi</a>
+          <a href="#s8-3" class="sub-link">8.3 mysqli_query()</a>
+          <a href="#s8-4" class="sub-link">8.4 fetch_array / fetch_row</a>
+          <a href="#s8-5" class="sub-link">8.5 mysqli_num_rows()</a>
+          <a href="#s8-6" class="sub-link">8.6 Connexion &amp; erreurs</a>
+          <a href="#s8-7" class="sub-link">8.7 Insérer, modifier, supprimer</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#s9" class="main-link">9. Exemple récapitulatif</a>
+      </div>
+      <div class="nav-group">
+        <a href="#s10" class="main-link">10. Quatre pages complètes</a>
+        <div class="sub-links-container">
+          <a href="#s10a" class="sub-link">10.1 Insertion</a>
+          <a href="#s10b" class="sub-link">10.2 Sélection</a>
+          <a href="#s10c" class="sub-link">10.3 Mise à jour</a>
+          <a href="#s10d" class="sub-link">10.4 Statistiques</a>
+        </div>
+      </div>
     </nav>
+    <div class="scrim" id="scrim"></div>
 
     <main>
       <div class="wrap">
@@ -950,7 +1265,7 @@
         </div>
 
         <h2 id="s1">1. Introduction au langage PHP</h2>
-        <h3>1.1 Définition</h3>
+        <h3 id="s1-1">1.1 Définition</h3>
         <p>
           PHP (abréviation de <i>Personal Home Page Hypertext Preprocessor</i>)
           est un langage de scripts qui s'intègre aux pages HTML et qui permet
@@ -1366,7 +1681,7 @@
           </p>
         </div>
 
-        <h3>1.3 Syntaxe générale d'un script PHP</h3>
+        <h3 id="s1-3">1.3 Syntaxe générale d'un script PHP</h3>
         <pre><code>&lt;?php
    // instructions PHP ici
    echo "Bonjour tout le monde !";
@@ -1377,7 +1692,7 @@
         </p>
 
         <h2 id="s2">2. Types de données, variables et opérateurs</h2>
-        <h3>2.1 Types de données</h3>
+        <h3 id="s2-1">2.1 Types de données</h3>
         <table>
           <thead>
             <tr>
@@ -1408,7 +1723,7 @@
             </tr>
           </tbody>
         </table>
-        <h3>2.2 Les variables</h3>
+        <h3 id="s2-2">2.2 Les variables</h3>
         <p>
           Toute variable commence par <code>$</code>, sans déclaration préalable
           (typage dynamique).
@@ -1416,7 +1731,7 @@
         <pre><code>&lt;?php
    $nom = "Ali"; $age = 17; $moyenne = 14.5; $actif = true;
 ?&gt;</code></pre>
-        <h3>2.3 Les constantes</h3>
+        <h3 id="s2-3">2.3 Les constantes</h3>
         <p>
           On définit une constante avec <code>define()</code>. Elle ne commence
           pas par <code>$</code> et n'est plus modifiable.
@@ -1425,7 +1740,7 @@
    define("ECOLE", "Lycée Rafèha");
    echo ("&lt;HR&gt;" . ECOLE);
 ?&gt;</code></pre>
-        <h3>2.4 Transtypage, logiques, comparaison, arithmétiques</h3>
+        <h3 id="s2-4">2.4 Transtypage, logiques, comparaison, arithmétiques</h3>
         <table>
           <thead>
             <tr>
@@ -1462,7 +1777,7 @@
             </tr>
           </tbody>
         </table>
-        <h3>2.5 Fonctions mathématiques et echo</h3>
+        <h3 id="s2-5">2.5 Fonctions mathématiques et echo</h3>
         <pre><code>&lt;?php
    echo abs(-7), " ", sqrt(16), " ", round(3.6), " ", rand(1,10);
 ?&gt;</code></pre>
@@ -1621,7 +1936,7 @@
           </tbody>
         </table>
 
-        <h3>6.1 checkdate — vérifier une date</h3>
+        <h3 id="s6-1">6.1 checkdate — vérifier une date</h3>
         <p>Syntaxe : <code>int checkdate(int m, int j, int a)</code></p>
         <p>
           Retourne <code>TRUE</code> si la date représentée par le jour j, le
@@ -1638,7 +1953,7 @@ else $d="données invalide ";
 echo($d);
 ?&gt;</code></pre>
 
-        <h3>6.2 date — formater une date</h3>
+        <h3 id="s6-2">6.2 date — formater une date</h3>
         <p>
           Syntaxe : <code>string date(string format, [int timestamp])</code>
         </p>
@@ -1654,7 +1969,7 @@ $d=date("Y-m-d H:i:s");
 echo("Nous sommes le : ".$d);
 ?&gt;</code></pre>
 
-        <h3>6.3 getdate — informations détaillées sur une date</h3>
+        <h3 id="s6-3">6.3 getdate — informations détaillées sur une date</h3>
         <p>Syntaxe : <code>array getdate([int timestamp])</code></p>
         <p>
           Retourne un tableau associatif contenant les informations de date et
@@ -1681,7 +1996,7 @@ echo("Le nom du jour de la semaine : ".$a["weekday"]."&lt;br&gt;");
 echo("Le nom du mois : ".$a["month"]."&lt;br&gt;");
 ?&gt;</code></pre>
 
-        <h3>6.4 time — timestamp de l'instant présent</h3>
+        <h3 id="s6-4">6.4 time — timestamp de l'instant présent</h3>
         <p>Syntaxe : <code>int time(void)</code></p>
         <p>
           Retourne le timestamp qui est un entier long représentant l'heure
@@ -1693,7 +2008,7 @@ $b=date("d/m/Y H:i:s",$a);
 echo($a." = ".$b);
 ?&gt;</code></pre>
 
-        <h3>6.5 mktime — construire un timestamp</h3>
+        <h3 id="s6-5">6.5 mktime — construire un timestamp</h3>
         <p>
           Syntaxe :
           <code
@@ -1716,7 +2031,7 @@ $d=date("d-m-Y H:i:s",$ns);
 echo("Ce nombre de secondes correspond à la date : ".$d);
 ?&gt;</code></pre>
 
-        <h3>6.6 strtotime — interpréter une date en anglais</h3>
+        <h3 id="s6-6">6.6 strtotime — interpréter une date en anglais</h3>
         <p>Syntaxe : <code>int strtotime(string time, [int now])</code></p>
         <p>
           Essaie de lire une date au format anglais et de la transformer en
@@ -2139,7 +2454,7 @@ echo (date("Y-d-m H:i:s",$e)." = ".$e." secondes&lt;br&gt;") ;
           </div>
         </div>
 
-        <h3>8.1 Le circuit d'une requête, étape par étape</h3>
+        <h3 id="s8-1">8.1 Le circuit d'une requête, étape par étape</h3>
         <div class="step">
           <b>1. Connexion</b> —
           <code>mysqli_connect(hôte, utilisateur, mot_de_passe)</code> ouvre une
@@ -2172,7 +2487,7 @@ echo (date("Y-d-m H:i:s",$e)." = ".$e." secondes&lt;br&gt;") ;
           connexion en fin de script.
         </div>
 
-        <h3>8.2 Fonctions MySQLi essentielles</h3>
+        <h3 id="s8-2">8.2 Fonctions MySQLi essentielles</h3>
         <table>
           <thead>
             <tr>
@@ -2243,7 +2558,7 @@ echo (date("Y-d-m H:i:s",$e)." = ".$e." secondes&lt;br&gt;") ;
           </tbody>
         </table>
 
-        <h3>8.3 mysqli_query() : un comportement différent selon la requête</h3>
+        <h3 id="s8-3">8.3 mysqli_query() : un comportement différent selon la requête</h3>
         <p>
           Syntaxe :
           <code>mixed mysqli_query(mysqli $connexion, string $requete)</code>.
@@ -2291,7 +2606,7 @@ if ($ok2) {
 }
 ?&gt;</code></pre>
 
-        <h3>8.4 mysqli_fetch_array() et mysqli_fetch_row()</h3>
+        <h3 id="s8-4">8.4 mysqli_fetch_array() et mysqli_fetch_row()</h3>
         <p>
           <code>mysqli_fetch_array($resultat)</code> extrait la ligne courante
           du résultat et avance automatiquement au suivant à chaque appel ; par
@@ -2329,7 +2644,7 @@ while ($row = mysqli_fetch_row($res2)) {
           l'ordre exact des colonnes.
         </p>
 
-        <h3>8.5 mysqli_num_rows()</h3>
+        <h3 id="s8-5">8.5 mysqli_num_rows()</h3>
         <p>
           Syntaxe : <code>int mysqli_num_rows(mysqli_result $resultat)</code>.
           Elle retourne le <b>nombre de lignes</b> contenues dans un résultat de
@@ -2353,7 +2668,7 @@ if ($nb == 0) {
 }
 ?&gt;</code></pre>
 
-        <h3>8.6 Se connecter et gérer les erreurs</h3>
+        <h3 id="s8-6">8.6 Se connecter et gérer les erreurs</h3>
         <pre><code>&lt;?php
 $connexion = mysqli_connect("localhost", "root", "");
 if (!$connexion) {
@@ -2362,7 +2677,7 @@ if (!$connexion) {
 mysqli_select_db($connexion, "ecole");
 ?&gt;</code></pre>
 
-        <h3>8.7 Insérer, mettre à jour, supprimer</h3>
+        <h3 id="s8-7">8.7 Insérer, mettre à jour, supprimer</h3>
         <pre><code>&lt;?php
 // INSERT
 $req = "INSERT INTO eleves (nom, moyenne) VALUES ('Ali', 14.5)";
@@ -3581,5 +3896,96 @@ mysqli_close($connexion);
         }
       })();
     </script>
-  </body>
+      <button type="button" id="to-top" aria-label="Remonter en haut de la page" title="Remonter en haut"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg></button>
+    <script>
+      (function () {
+        var bar = document.querySelector("header.top");
+        var nav = document.getElementById("sidebar");
+        var prog = bar.querySelector(".progress i");
+        var btn = document.getElementById("to-top");
+        var now = document.getElementById("now");
+        var menu = document.getElementById("menu-btn");
+        var scrim = document.getElementById("scrim");
+        var root = document.documentElement, ticking = false, lastKey = "";
+
+        var groups = [].slice.call(nav.querySelectorAll(".nav-group")).map(function (g) {
+          var main = g.querySelector(".main-link");
+          return {
+            g: g,
+            main: main,
+            sec: document.querySelector(main.getAttribute("href")),
+            subs: [].slice.call(g.querySelectorAll(".sub-link")).map(function (a) {
+              return { a: a, el: document.querySelector(a.getAttribute("href")) };
+            }),
+          };
+        });
+
+        function setH() { root.style.setProperty("--header-h", bar.offsetHeight + "px"); }
+
+        function update() {
+          ticking = false;
+          var y = window.pageYOffset || root.scrollTop;
+          var max = root.scrollHeight - window.innerHeight;
+          prog.style.transform = "scaleX(" + (max > 0 ? Math.min(1, y / max) : 0) + ")";
+          bar.classList.toggle("scrolled", y > 8);
+          btn.classList.toggle("show", y > 400);
+
+          var line = bar.offsetHeight + 40, cg = -1, cs = -1;
+          groups.forEach(function (o, i) {
+            if (o.sec && o.sec.getBoundingClientRect().top <= line) cg = i;
+          });
+          if (cg >= 0) {
+            groups[cg].subs.forEach(function (o, j) {
+              if (o.el && o.el.getBoundingClientRect().top <= line) cs = j;
+            });
+          }
+          if (max > 0 && y >= max - 4) {
+            cg = groups.length - 1;
+            cs = groups[cg].subs.length - 1;
+          }
+          var key = cg + ":" + cs;
+          if (key === lastKey) return;
+          lastKey = key;
+
+          groups.forEach(function (o, i) {
+            o.g.classList.toggle("current", i === cg);
+            o.subs.forEach(function (s, j) {
+              if (i === cg && j === cs) s.a.setAttribute("aria-current", "location");
+              else s.a.removeAttribute("aria-current");
+            });
+          });
+
+          if (cg < 0) { now.innerHTML = ""; return; }
+          now.innerHTML = "<b></b>" + (cs >= 0 ? " › <span></span>" : "");
+          now.firstChild.textContent = groups[cg].main.textContent.trim();
+          if (cs >= 0) now.lastChild.textContent = groups[cg].subs[cs].a.textContent.trim();
+
+          var t = cs >= 0 ? groups[cg].subs[cs].a : groups[cg].main;
+          var nr = nav.getBoundingClientRect(), tr = t.getBoundingClientRect();
+          if (nav.scrollHeight > nav.clientHeight && (tr.top < nr.top + 50 || tr.bottom > nr.bottom - 20)) {
+            nav.scrollTo({ top: nav.scrollTop + tr.top - nr.top - nav.clientHeight / 2, behavior: "smooth" });
+          }
+        }
+        function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+
+        function setNav(open) {
+          document.body.classList.toggle("nav-open", open);
+          menu.setAttribute("aria-expanded", open ? "true" : "false");
+          menu.setAttribute("aria-label", open ? "Fermer le sommaire" : "Ouvrir le sommaire");
+          if (open) { var f = nav.querySelector("a"); if (f) f.focus({ preventScroll: true }); }
+          else if (document.activeElement && nav.contains(document.activeElement)) { menu.focus(); }
+        }
+        menu.addEventListener("click", function () { setNav(!document.body.classList.contains("nav-open")); });
+        scrim.addEventListener("click", function () { setNav(false); });
+        nav.addEventListener("click", function (e) { if (e.target.closest("a") && window.innerWidth <= 860) setNav(false); });
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape" && document.body.classList.contains("nav-open")) setNav(false); });
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", function () { if (window.innerWidth > 860) setNav(false); setH(); onScroll(); });
+        btn.addEventListener("click", function () { window.scrollTo({ top: 0 }); });
+        setH();
+        update();
+      })();
+    </script>
+</body>
 </html>
